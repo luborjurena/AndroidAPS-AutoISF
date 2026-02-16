@@ -122,7 +122,7 @@ class OverviewMenusImpl @Inject constructor(
 
     companion object {
 
-        const val MAX_GRAPHS = 5 // including main
+        const val MAX_GRAPHS = 9 // including main
     }
 
     override fun enabledTypes(graph: Int): String {
