@@ -25,6 +25,8 @@ data class AIV(
     var shortAvgDelta: Double? = null,
     /** Suggested SMB in U. */
     var smb: Double? = null,
+    /** Variable SMB delivery ratio (fraction of required insulin delivered as SMB). */
+    var smbRatio: Double? = null,
     /** Required insulin in U. */
     var insulinReq: Double? = null,
     /** Suggested temp basal rate in U/h, null if no change was requested. */

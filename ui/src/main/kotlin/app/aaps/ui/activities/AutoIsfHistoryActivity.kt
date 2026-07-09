@@ -81,6 +81,7 @@ class AutoIsfHistoryActivity : TranslatedDaggerAppCompatActivity() {
         header.pp.text = "pp"
         header.dura.text = "dura"
         header.smb.text = "SMB"
+        header.smbRatio.text = "SMBR"
         header.iobTh.text = "iobT"
         header.bgAccel.text = "acce"
         header.delta.text = "Δ"
@@ -128,6 +129,7 @@ class AutoIsfHistoryActivity : TranslatedDaggerAppCompatActivity() {
                 pp.text = ratio(aiv.ppIsf)
                 dura.text = ratio(aiv.duraIsf)
                 smb.text = insulin(aiv.smb)
+                smbRatio.text = aiv.smbRatio?.let { decimalFormatter.to2Decimal(it) } ?: "--"
                 iobTh.text = decimalFormatter.to2Decimal(aiv.iobThEffective)
                 bgAccel.text = aiv.bgAcceleration?.let { decimalFormatter.to2Decimal(it) } ?: "--"
                 delta.text = deltaInUnits(aiv.delta)
