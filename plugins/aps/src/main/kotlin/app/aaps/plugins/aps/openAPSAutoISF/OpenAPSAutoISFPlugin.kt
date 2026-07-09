@@ -547,6 +547,7 @@ open class OpenAPSAutoISFPlugin @Inject constructor(
             rxBus.send(EventAPSCalculationFinished())
             // capture insulin data for the AutoISF history table
             autoIsfValues.smb = it.units
+            autoIsfValues.smbRatio = smbRatio
             autoIsfValues.insulinReq = it.insulinReq
             autoIsfValues.tbr = it.rate
         }

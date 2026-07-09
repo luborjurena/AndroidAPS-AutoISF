@@ -59,6 +59,13 @@
         tools:text="--" />
 
     <TextView
+        android:id="@+id/smb_ratio"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="48dp"
+        android:textColor="@color/iob"
+        tools:text="0.65" />
+
+    <TextView
         android:id="@+id/iob_th"
         style="@style/AutoIsfHistoryCell"
         android:layout_width="48dp"
