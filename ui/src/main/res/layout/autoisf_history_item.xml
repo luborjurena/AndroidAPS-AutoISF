@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="4dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="52dp"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="05:48" />
+
+    <TextView
+        android:id="@+id/bgl"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/inRange"
+        tools:text="4.6" />
+
+    <TextView
+        android:id="@+id/final_ratio"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/finalIsfColor"
+        tools:text="1.04" />
+
+    <TextView
+        android:id="@+id/acce"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/acceIsfColor"
+        tools:text="1.28" />
+
+    <TextView
+        android:id="@+id/bg"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/bgIsfColor"
+        tools:text="0.81" />
+
+    <TextView
+        android:id="@+id/pp"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/ppIsfColor"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/dura"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/duraIsfColor"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/smb"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/iob_th"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="48dp"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="9.50" />
+
+    <TextView
+        android:id="@+id/bg_accel"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="52dp"
+        android:textColor="@color/inRange"
+        tools:text="2.32" />
+
+    <TextView
+        android:id="@+id/delta"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/inRange"
+        tools:text="-0.1" />
+
+    <TextView
+        android:id="@+id/short_delta"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/inRange"
+        tools:text="-0.1" />
+
+    <TextView
+        android:id="@+id/req"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/iob"
+        tools:text="0.09" />
+
+    <TextView
+        android:id="@+id/tbr"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="@color/iob"
+        tools:text="0.67" />
+
+    <TextView
+        android:id="@+id/steps5"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="40dp"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/steps15"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="40dp"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/steps30"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="40dp"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/steps60"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="40dp"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+    <TextView
+        android:id="@+id/steps180"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="44dp"
+        android:textColor="@color/iob"
+        tools:text="--" />
+
+</LinearLayout>

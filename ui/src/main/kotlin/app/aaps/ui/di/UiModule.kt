@@ -2,6 +2,7 @@ package app.aaps.ui.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import app.aaps.ui.activities.AutoIsfHistoryActivity
 import app.aaps.ui.activities.BolusProgressHelperActivity
 import app.aaps.ui.activities.ErrorHelperActivity
 import app.aaps.ui.activities.ProfileHelperActivity
@@ -73,6 +74,7 @@ abstract class UiModule {
     @ContributesAndroidInjector abstract fun contributeBolusProgressHelperActivity(): BolusProgressHelperActivity
     @ContributesAndroidInjector abstract fun contributeErrorHelperActivity(): ErrorHelperActivity
     @ContributesAndroidInjector abstract fun contributesStatsActivity(): StatsActivity
+    @ContributesAndroidInjector abstract fun contributesAutoIsfHistoryActivity(): AutoIsfHistoryActivity
     @ContributesAndroidInjector abstract fun contributesSurveyActivity(): SurveyActivity
     @ContributesAndroidInjector abstract fun contributesTreatmentsActivity(): TreatmentsActivity
     @ContributesAndroidInjector abstract fun contributesProfileHelperActivityActivity(): ProfileHelperActivity

@@ -31,6 +31,7 @@ import androidx.core.view.MenuProvider
 import app.aaps.activities.HistoryBrowseActivity
 import app.aaps.activities.PreferencesActivity
 import app.aaps.core.data.ue.Sources
+import app.aaps.core.interfaces.aps.APSResult
 import app.aaps.core.interfaces.aps.Loop
 import app.aaps.core.interfaces.configuration.Config
 import app.aaps.core.interfaces.configuration.ConfigBuilder
@@ -65,6 +66,7 @@ import app.aaps.plugins.configuration.activities.SingleFragmentActivity
 import app.aaps.plugins.configuration.maintenance.MaintenancePlugin
 import app.aaps.plugins.configuration.setupwizard.SetupWizardActivity
 import app.aaps.plugins.constraints.signatureVerifier.SignatureVerifierPlugin
+import app.aaps.ui.activities.AutoIsfHistoryActivity
 import app.aaps.ui.activities.ProfileHelperActivity
 import app.aaps.ui.activities.StatsActivity
 import app.aaps.ui.activities.TreatmentsActivity
@@ -166,6 +168,12 @@ class MainActivity : DaggerAppCompatActivityWithResult() {
                 pluginPreferencesMenuItem = menu.findItem(R.id.nav_plugin_preferences)
             }
 
+            override fun onPrepareMenu(menu: Menu) {
+                // AutoISF history makes sense only while the AutoISF algorithm is in use
+                menu.findItem(R.id.nav_autoisf_history)?.isVisible =
+                    config.APS && runCatching { activePlugin.activeAPS.algorithm == APSResult.Algorithm.AUTO_ISF }.getOrDefault(false)
+            }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.nav_preferences        -> {
@@ -255,6 +263,11 @@ class MainActivity : DaggerAppCompatActivityWithResult() {
 
                     R.id.nav_stats              -> {
                         startActivity(Intent(this@MainActivity, StatsActivity::class.java).setAction("info.nightscout.androidaps.MainActivity"))
+                        true
+                    }
+
+                    R.id.nav_autoisf_history    -> {
+                        startActivity(Intent(this@MainActivity, AutoIsfHistoryActivity::class.java).setAction("info.nightscout.androidaps.MainActivity"))
                         true
                     }
 

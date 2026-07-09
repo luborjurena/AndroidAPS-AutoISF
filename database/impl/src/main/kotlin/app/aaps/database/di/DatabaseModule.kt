@@ -218,7 +218,27 @@ open class DatabaseModule {
             dropCustomIndexes(db)
         }
     }
+    internal val migration32to33 = object : Migration(32, 33) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            // Additional AutoISF values for the AutoISF history table
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `glucose` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `bgAcceleration` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `delta` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `shortAvgDelta` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `smb` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `insulinReq` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `tbr` REAL")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `steps5` INTEGER")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `steps15` INTEGER")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `steps30` INTEGER")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `steps60` INTEGER")
+            db.execSQL("ALTER TABLE `$TABLE_AUTOISF_VALUES` ADD COLUMN `steps180` INTEGER")
+            // Custom indexes must be dropped on migration to pass room schema checking after upgrade
+            dropCustomIndexes(db)
+        }
+    }
+
     /** List of all migrations for easy reply in tests. */
     @VisibleForTesting
-    internal val migrations = arrayOf(migration20to21, migration21to22, migration22to23, migration23to24, migration24to25, migration25to26, migration26to27, migration27to28, migration28to29, migration29to30, migration30to31, migration31to32)
+    internal val migrations = arrayOf(migration20to21, migration21to22, migration22to23, migration23to24, migration24to25, migration25to26, migration26to27, migration27to28, migration28to29, migration29to30, migration30to31, migration31to32, migration32to33)
 }
