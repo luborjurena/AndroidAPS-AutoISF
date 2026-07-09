@@ -19,6 +19,18 @@ fun AutoIsfValues.fromDb(): AIV =
         duraIsf = this.duraIsf,
         finalIsf = this.finalIsf,
         iobThEffective = this.iobThEffective,
+        glucose = this.glucose,
+        bgAcceleration = this.bgAcceleration,
+        delta = this.delta,
+        shortAvgDelta = this.shortAvgDelta,
+        smb = this.smb,
+        insulinReq = this.insulinReq,
+        tbr = this.tbr,
+        steps5 = this.steps5,
+        steps15 = this.steps15,
+        steps30 = this.steps30,
+        steps60 = this.steps60,
+        steps180 = this.steps180,
         ids = this.interfaceIDs.fromDb()
     )
 
@@ -38,5 +50,17 @@ fun AIV.toDb(): AutoIsfValues =
         duraIsf = this.duraIsf,
         finalIsf = this.finalIsf,
         iobThEffective = this.iobThEffective,
+        glucose = this.glucose,
+        bgAcceleration = this.bgAcceleration,
+        delta = this.delta,
+        shortAvgDelta = this.shortAvgDelta,
+        smb = this.smb,
+        insulinReq = this.insulinReq,
+        tbr = this.tbr,
+        steps5 = this.steps5,
+        steps15 = this.steps15,
+        steps30 = this.steps30,
+        steps60 = this.steps60,
+        steps180 = this.steps180,
         interfaceIDs_backing = this.ids.toDb()
     )

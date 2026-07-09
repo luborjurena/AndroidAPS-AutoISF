@@ -545,8 +545,22 @@ open class OpenAPSAutoISFPlugin @Inject constructor(
             lastAPSRun = now
             aapsLogger.debug(LTag.APS, "Result: $it")
             rxBus.send(EventAPSCalculationFinished())
+            // capture insulin data for the AutoISF history table
+            autoIsfValues.smb = it.units
+            autoIsfValues.insulinReq = it.insulinReq
+            autoIsfValues.tbr = it.rate
         }
         autoIsfValues.timestamp = now
+        // capture glucose and activity data for the AutoISF history table
+        autoIsfValues.glucose = glucoseStatus.glucose
+        autoIsfValues.delta = glucoseStatus.delta
+        autoIsfValues.shortAvgDelta = glucoseStatus.shortAvgDelta
+        autoIsfValues.bgAcceleration = (glucoseStatus as? GlucoseStatusAutoIsf)?.bgAcceleration
+        autoIsfValues.steps5 = recentSteps5Minutes
+        autoIsfValues.steps15 = recentSteps15Minutes
+        autoIsfValues.steps30 = recentSteps30Minutes
+        autoIsfValues.steps60 = recentSteps60Minutes
+        autoIsfValues.steps180 = StepService.getRecentStepCount180Min()
         //aapsLogger.debug(LTag.APS, "autoIsfValues to write contains: $autoIsfValues")
         disposable += persistenceLayer.insertOrUpdateAutoIsfValues(autoIsfValues).subscribe()
         //val autoIsfRecords = persistenceLayer.getAutoIsfValuesFromTime(now-100000L)

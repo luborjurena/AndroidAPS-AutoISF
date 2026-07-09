@@ -33,6 +33,11 @@
         android:orderInCategory="1"
         app:showAsAction="never"
         android:title="@string/statistics" />
+    <item
+        android:id="@+id/nav_autoisf_history"
+        android:orderInCategory="1"
+        app:showAsAction="never"
+        android:title="@string/autoisf_history" />
     <!--    <item
             android:id="@+id/nav_survey"
             android:orderInCategory="1"

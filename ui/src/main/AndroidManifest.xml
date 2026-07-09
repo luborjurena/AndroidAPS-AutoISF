@@ -45,6 +45,10 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".activities.AutoIsfHistoryActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.TreatmentsActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />

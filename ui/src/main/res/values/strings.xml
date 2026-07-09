@@ -181,4 +181,7 @@
         <item>Negative only</item>
     </string-array>
 
+    <!-- AutoISF history -->
+    <string name="autoisf_history">AutoISF History</string>
+
 </resources>
