@@ -17,6 +17,9 @@ dependencies {
     implementation(project(":core:interfaces"))
     implementation(project(":core:ui"))
 
+    implementation(platform(libs.kotlinx.coroutines.bom))
+    implementation(libs.kotlinx.coroutines.core)
+
     ksp(libs.com.google.dagger.compiler)
     ksp(libs.com.google.dagger.android.processor)
 }
