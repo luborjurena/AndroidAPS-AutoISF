@@ -51,6 +51,7 @@ import java.util.TimeZone
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 
 /*
  * adaptation from oref0 autotune developed by philoul on 2022 (complete refactoring of AutotunePlugin initialised by Rumen Georgiev on 1/29/2018.)
@@ -355,6 +356,16 @@ class AutotunePlugin @Inject constructor(
                     jsonSettings.put("curve", if (peakTime > 55) "rapid-acting" else "ultra-rapid")
                     jsonSettings.put("useCustomPeakTime", true)
                     jsonSettings.put("insulinPeakTime", peakTime)
+                }
+
+                // oref has no glucodynamic curve, approximate it with the peak time of an
+                // infinitesimal dose, the lower bound of the dose dependent peak time
+                insulinInterface.id === Insulin.InsulinType.OREF_LYUMJEV_U100_PD ||
+                    insulinInterface.id === Insulin.InsulinType.OREF_LYUMJEV_U200_PD -> {
+                    val modelPeak = insulinInterface.peakTime(0.0).roundToInt()
+                    jsonSettings.put("curve", if (modelPeak > 55) "rapid-acting" else "ultra-rapid")
+                    jsonSettings.put("useCustomPeakTime", true)
+                    jsonSettings.put("insulinPeakTime", modelPeak)
                 }
             }
             jsonString = jsonSettings.toString(4).replace("\\/", "/")

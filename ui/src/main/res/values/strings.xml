@@ -110,6 +110,8 @@
     <string name="no_records_available">No records available</string>
     <string name="calculation_short">Calc</string>
     <string name="treatments_iob_label_string">IOB:</string>
+    <!-- Peak time of the insulin activity curve of a bolus, shown next to the bolus size -->
+    <string name="treatments_peak_time">\@%1$d min</string>
     <string name="treatments_carbs_label_string">Carbs:</string>
     <string name="tempbasals_netratio_label_string">Ratio:</string>
     <string name="tempbasals_iob_label_string">IOB:</string>

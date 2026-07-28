@@ -16,5 +16,11 @@
     <string name="fast_acting_insulin_comment">Novorapid, Novolog, Humalog</string>
     <string name="ultra_fast_acting_insulin_comment">Fiasp</string>
 
+    <!-- Glucodynamic (PD) models -->
+    <string name="lyumjev_u100_pd">Lyumjev U100 (Tsunami)</string>
+    <string name="lyumjev_u200_pd">Lyumjev U200 (Tsunami)</string>
+    <string name="description_insulin_lyumjev_u100_pd">Glucodynamic model for Lyumjev U100 (standard concentration). The peak time is calculated from the size of each bolus, insulin action ends 8 h after the bolus.</string>
+    <string name="description_insulin_lyumjev_u200_pd">Glucodynamic model for Lyumjev U200 (2 x concentrated). The peak time is calculated from the size of each bolus, insulin action ends 8 h after the bolus. YOU MUST HALVE YOUR BASALS AND DOUBLE YOUR ISFS BEFORE USE!</string>
+    <string name="dia_shorter_than_insulin_model">%1$s: DIA of %2$.1f h is shorter than the %3$.0f h duration of the insulin model. IOB is dropped before the insulin has finished acting. Increase DIA in your profile.</string>
 
 </resources>

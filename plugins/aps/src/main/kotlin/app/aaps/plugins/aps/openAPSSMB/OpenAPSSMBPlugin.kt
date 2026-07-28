@@ -12,6 +12,8 @@ import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import app.aaps.core.data.aps.SMBDefaults
+import app.aaps.core.data.configuration.Constants
+import app.aaps.core.data.model.BS
 import app.aaps.core.data.model.GlucoseUnit
 import app.aaps.core.data.plugin.PluginType
 import app.aaps.core.data.time.T
@@ -285,22 +287,45 @@ open class OpenAPSSMBPlugin @Inject constructor(
         dynIsfResult.tddLast4H = tddCalculator.calculateDaily(-4, 0)?.totalAmount
         dynIsfResult.tddLast8to4H = tddCalculator.calculateDaily(-8, -4)?.totalAmount
 
-        val insulin = activePlugin.activeInsulin
+        val insulinPeak = effectiveInsulinPeak()
         dynIsfResult.insulinDivisor = when {
-            insulin.peak > 65 -> 55 // rapid peak: 75
-            insulin.peak > 50 -> 65 // ultra rapid peak: 55
-            else              -> 75 // lyumjev peak: 45
+            insulinPeak > 65 -> 55 // rapid peak: 75
+            insulinPeak > 50 -> 65 // ultra rapid peak: 55
+            else             -> 75 // lyumjev peak: 45
         }
-
 
         if (dynIsfResult.tddPartsCalculated() && glucoseStatus != null) {
             val tddStatus = TddStatus(dynIsfResult.tdd1D!!, dynIsfResult.tdd7D!!, dynIsfResult.tddLast24H!!, dynIsfResult.tddLast4H!!, dynIsfResult.tddLast8to4H!!)
             val tddWeightedFromLast8H = ((1.4 * tddStatus.tddLast4H) + (0.6 * tddStatus.tddLast8to4H)) * 3
             dynIsfResult.tdd = ((tddWeightedFromLast8H * 0.33) + (tddStatus.tdd7D * 0.34) + (tddStatus.tdd1D * 0.33)) * preferences.get(IntKey.ApsDynIsfAdjustmentFactor) / 100.0 * multiplier
             dynIsfResult.variableSensitivity = Round.roundTo(1800 / (dynIsfResult.tdd!! * (ln((glucoseStatus.glucose / dynIsfResult.insulinDivisor) + 1))), 0.1)
-            aapsLogger.debug(LTag.APS, "multiplier=$multiplier dynIsfResult=${dynIsfResult.log()} glucoseStatus=${glucoseStatus.glucose} insulinDivisor=${dynIsfResult.insulinDivisor}")
+            aapsLogger.debug(
+                LTag.APS,
+                "multiplier=$multiplier dynIsfResult=${dynIsfResult.log()} glucoseStatus=${glucoseStatus.glucose} insulinPeak=$insulinPeak insulinDivisor=${dynIsfResult.insulinDivisor}"
+            )
         }
         return dynIsfResult
+    }
+
+    /**
+     * Peak time [min] of the insulin that is currently on board.
+     *
+     * Glucodynamic models derive the peak time from the size of each single bolus, so no single
+     * number describes them. Average the peak times of the boluses inside the DIA window, weighted
+     * by their size, which is what the IOB is made of. Models with a constant peak time return that
+     * peak for every dose, so for them this is the plain peak of the plugin.
+     */
+    internal fun effectiveInsulinPeak(): Double {
+        val insulin = activePlugin.activeInsulin
+        val dia = profileFunction.getProfile()?.dia ?: Constants.defaultDIA
+        val now = dateUtil.now()
+        val boluses = persistenceLayer
+            .getBolusesFromTimeToTime(now - T.mins((dia * 60).toLong()).msecs(), now, true)
+            .filter { it.type != BS.Type.PRIMING && it.amount > 0.0 }
+        val amount = boluses.sumOf { it.amount }
+        // nothing delivered inside the DIA window, take the peak of an infinitesimal dose
+        if (amount <= 0.0) return insulin.peakTime(0.0)
+        return boluses.sumOf { it.amount * insulin.peakTime(it.amount) } / amount
     }
 
     override fun invoke(initiator: String, tempBasalFallback: Boolean) {

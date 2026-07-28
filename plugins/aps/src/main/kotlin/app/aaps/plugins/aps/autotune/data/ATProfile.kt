@@ -30,6 +30,7 @@ import java.util.TimeZone
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 class ATProfile @Inject constructor(
     private val activePlugin: ActivePlugin,
@@ -139,6 +140,13 @@ class ATProfile @Inject constructor(
                 json.put("insulinPeakTime", 45)
             } else if (insulinInterface.id === Insulin.InsulinType.OREF_FREE_PEAK) {
                 val peakTime: Int = preferences.get(IntKey.InsulinOrefPeak)
+                json.put("curve", if (peakTime > 50) "rapid-acting" else "ultra-rapid")
+                json.put("useCustomPeakTime", true)
+                json.put("insulinPeakTime", peakTime)
+            } else if (insulinInterface.id === Insulin.InsulinType.OREF_LYUMJEV_U100_PD || insulinInterface.id === Insulin.InsulinType.OREF_LYUMJEV_U200_PD) {
+                // oref has no glucodynamic curve, approximate it with the peak time of an
+                // infinitesimal dose, the lower bound of the dose dependent peak time
+                val peakTime: Int = insulinInterface.peakTime(0.0).roundToInt()
                 json.put("curve", if (peakTime > 50) "rapid-acting" else "ultra-rapid")
                 json.put("useCustomPeakTime", true)
                 json.put("insulinPeakTime", peakTime)
