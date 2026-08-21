@@ -77,6 +77,7 @@ import app.aaps.plugins.aps.OpenAPSFragment
 import app.aaps.plugins.aps.R
 import app.aaps.plugins.aps.events.EventOpenAPSUpdateGui
 import app.aaps.plugins.aps.events.EventResetOpenAPSGui
+import app.aaps.plugins.aps.openAPS.EffectiveInsulinPeak
 import app.aaps.plugins.aps.openAPSSMB.PhoneMovementDetector
 import app.aaps.plugins.aps.openAPSSMB.StepService
 import com.google.gson.Gson
@@ -116,7 +117,8 @@ open class OpenAPSAutoISFPlugin @Inject constructor(
     private val determineBasalAutoISF: DetermineBasalAutoISF,
     private val profiler: Profiler,
     private val glucoseStatusCalculatorAutoIsf: GlucoseStatusCalculatorAutoIsf,
-    private val apsResultProvider: Provider<APSResult>
+    private val apsResultProvider: Provider<APSResult>,
+    private val effectiveInsulinPeak: EffectiveInsulinPeak
 ) : PluginBase(
     PluginDescription()
         .mainType(PluginType.APS)
@@ -460,7 +462,10 @@ open class OpenAPSAutoISFPlugin @Inject constructor(
             smb_max_range_extension = smbMaxRangeExtension,
             enableSMB_EvenOn_OddOff_always = enableSMB_EvenOn_OddOff_always,
             iob_threshold_percent = iobThresholdPercent,
-            profile_percentage = profile_percentage
+            profile_percentage = profile_percentage,
+            // minPredBGs start once the insulin on board has peaked; only the glucodynamic models
+            // deviate from the oref default of 90, their peak time grows with the bolus size
+            insulin_peak_time = if (activePlugin.activeInsulin.glucodynamic) effectiveInsulinPeak() + 30.0 else 90.0
         )
         var sensitivityRatio = 1.0
         // TODO eliminate

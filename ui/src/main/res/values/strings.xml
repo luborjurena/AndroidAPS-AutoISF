@@ -110,6 +110,8 @@
     <string name="no_records_available">No records available</string>
     <string name="calculation_short">Calc</string>
     <string name="treatments_iob_label_string">IOB:</string>
+    <!-- Peak time of the insulin activity curve of a bolus, shown next to the bolus size -->
+    <string name="treatments_peak_time">\@%1$d min</string>
     <string name="treatments_carbs_label_string">Carbs:</string>
     <string name="tempbasals_netratio_label_string">Ratio:</string>
     <string name="tempbasals_iob_label_string">IOB:</string>
@@ -183,5 +185,13 @@
 
     <!-- AutoISF history -->
     <string name="autoisf_history">AutoISF History</string>
+
+    <!-- Glucodynamic model debug view -->
+    <string name="glucodynamic_model">Glucodynamic Model</string>
+    <string name="glucodynamic_model_insulin">Model: %1$s</string>
+    <string name="glucodynamic_model_insulin_not_glucodynamic">Model: %1$s (not glucodynamic)</string>
+    <string name="glucodynamic_model_dia">Model DIA: %1$.1f h — profile DIA: %2$.1f h</string>
+    <string name="glucodynamic_model_peak">Nominal peak: %1$d min — IOB weighted peak: %2$.0f min</string>
+    <string name="glucodynamic_model_totals">Model bolus IOB: %1$.2f U — activity: %2$.3f U/min</string>
 
 </resources>

@@ -613,7 +613,8 @@ class DetermineBasalAutoISF @Inject constructor(
             // set minPredBGs starting when currently-dosed insulin activity will peak
             // look ahead 60m (regardless of insulin type) so as to be less aggressive on slower insulins
             // add 30m to allow for insulin delivery (SMBs or temps)
-            val insulinPeakTime = 90
+            // 90 unless a glucodynamic model reports the dose dependent peak of the insulin on board
+            val insulinPeakTime = profile.insulin_peak_time
             val insulinPeak5m = (insulinPeakTime / 60.0) * 12.0
             //console.error(insulinPeakTime, insulinPeak5m, profile.insulinPeakTime, profile.curve);
 

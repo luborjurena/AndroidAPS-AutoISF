@@ -144,6 +144,7 @@ open class Notification {
         const val EQUIL_ALARM = 93
         const val EQUIL_ALARM_INSULIN = 94
         const val PERMISSION_STEPS = 95
+        const val DIA_SHORTER_THAN_INSULIN_MODEL = 96
 
         const val USER_MESSAGE = 1000
 

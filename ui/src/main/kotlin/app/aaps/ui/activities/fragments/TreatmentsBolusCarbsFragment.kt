@@ -49,6 +49,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class TreatmentsBolusCarbsFragment : DaggerFragment(), MenuProvider {
 
@@ -234,6 +235,11 @@ class TreatmentsBolusCarbsFragment : DaggerFragment(), MenuProvider {
                     holder.binding.iobLabel.visibility = View.GONE
                     holder.binding.iob.visibility = View.GONE
                 }
+                // peak time of the activity curve of this bolus, dose dependent for glucodynamic models
+                val showPeak = bolus.type != BS.Type.PRIMING
+                holder.binding.peak.visibility = showPeak.toVisibility()
+                if (showPeak)
+                    holder.binding.peak.text = rh.gs(R.string.treatments_peak_time, activePlugin.activeInsulin.peakTime(bolus.amount).roundToInt())
                 if (bolus.timestamp > dateUtil.now())
                     holder.binding.date.setTextColor(rh.gac(context, app.aaps.core.ui.R.attr.scheduledColor)) else holder.binding.date.setTextColor(holder.binding.carbs.currentTextColor)
                 holder.binding.mealOrCorrection.text =

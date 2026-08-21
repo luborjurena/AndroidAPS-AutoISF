@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="4dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="52dp"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="05:48" />
+
+    <TextView
+        android:id="@+id/amount"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="48dp"
+        android:textColor="@color/iob"
+        tools:text="4.20" />
+
+    <TextView
+        android:id="@+id/peak_minutes"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="98" />
+
+    <TextView
+        android:id="@+id/peak_at"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="52dp"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="07:26" />
+
+    <TextView
+        android:id="@+id/elapsed"
+        style="@style/AutoIsfHistoryCell"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="126" />
+
+    <TextView
+        android:id="@+id/activity"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="56dp"
+        android:textColor="@color/iob"
+        tools:text="0.021" />
+
+    <TextView
+        android:id="@+id/iob"
+        style="@style/AutoIsfHistoryCell"
+        android:layout_width="48dp"
+        android:textColor="@color/iob"
+        tools:text="2.31" />
+
+</LinearLayout>

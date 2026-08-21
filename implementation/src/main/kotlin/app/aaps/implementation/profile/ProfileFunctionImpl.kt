@@ -159,7 +159,8 @@ class ProfileFunctionImpl @Inject constructor(
             percentage = percentage,
             duration = T.mins(durationInMinutes.toLong()).msecs(),
             iCfg = activePlugin.activeInsulin.iCfg.also {
-                it.insulinEndTime = (pureProfile.dia * 3600 * 1000).toLong()
+                // glucodynamic models fix their own end of action, keep it instead of the profile DIA
+                if (!activePlugin.activeInsulin.glucodynamic) it.insulinEndTime = (pureProfile.dia * 3600 * 1000).toLong()
             }
         )
     }

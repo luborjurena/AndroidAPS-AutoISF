@@ -67,6 +67,7 @@ import app.aaps.plugins.configuration.maintenance.MaintenancePlugin
 import app.aaps.plugins.configuration.setupwizard.SetupWizardActivity
 import app.aaps.plugins.constraints.signatureVerifier.SignatureVerifierPlugin
 import app.aaps.ui.activities.AutoIsfHistoryActivity
+import app.aaps.ui.activities.GlucodynamicModelActivity
 import app.aaps.ui.activities.ProfileHelperActivity
 import app.aaps.ui.activities.StatsActivity
 import app.aaps.ui.activities.TreatmentsActivity
@@ -172,6 +173,9 @@ class MainActivity : DaggerAppCompatActivityWithResult() {
                 // AutoISF history makes sense only while the AutoISF algorithm is in use
                 menu.findItem(R.id.nav_autoisf_history)?.isVisible =
                     config.APS && runCatching { activePlugin.activeAPS.algorithm == APSResult.Algorithm.AUTO_ISF }.getOrDefault(false)
+                // Glucodynamic model debug view makes sense only while a glucodynamic insulin model is in use
+                menu.findItem(R.id.nav_glucodynamic_model)?.isVisible =
+                    runCatching { activePlugin.activeInsulin.glucodynamic }.getOrDefault(false)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
@@ -268,6 +272,11 @@ class MainActivity : DaggerAppCompatActivityWithResult() {
 
                     R.id.nav_autoisf_history    -> {
                         startActivity(Intent(this@MainActivity, AutoIsfHistoryActivity::class.java).setAction("info.nightscout.androidaps.MainActivity"))
+                        true
+                    }
+
+                    R.id.nav_glucodynamic_model -> {
+                        startActivity(Intent(this@MainActivity, GlucodynamicModelActivity::class.java).setAction("info.nightscout.androidaps.MainActivity"))
                         true
                     }
 

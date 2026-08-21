@@ -75,6 +75,7 @@ import app.aaps.plugins.aps.OpenAPSFragment
 import app.aaps.plugins.aps.R
 import app.aaps.plugins.aps.events.EventOpenAPSUpdateGui
 import app.aaps.plugins.aps.events.EventResetOpenAPSGui
+import app.aaps.plugins.aps.openAPS.EffectiveInsulinPeak
 import app.aaps.plugins.aps.openAPS.TddStatus
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -107,7 +108,8 @@ open class OpenAPSSMBPlugin @Inject constructor(
     private val determineBasalSMB: DetermineBasalSMB,
     private val profiler: Profiler,
     private val glucoseStatusCalculatorSMB: GlucoseStatusCalculatorSMB,
-    private val apsResultProvider: Provider<APSResult>
+    private val apsResultProvider: Provider<APSResult>,
+    private val effectiveInsulinPeak: EffectiveInsulinPeak
 ) : PluginBase(
     PluginDescription()
         .mainType(PluginType.APS)
@@ -285,20 +287,22 @@ open class OpenAPSSMBPlugin @Inject constructor(
         dynIsfResult.tddLast4H = tddCalculator.calculateDaily(-4, 0)?.totalAmount
         dynIsfResult.tddLast8to4H = tddCalculator.calculateDaily(-8, -4)?.totalAmount
 
-        val insulin = activePlugin.activeInsulin
+        val insulinPeak = effectiveInsulinPeak()
         dynIsfResult.insulinDivisor = when {
-            insulin.peak > 65 -> 55 // rapid peak: 75
-            insulin.peak > 50 -> 65 // ultra rapid peak: 55
-            else              -> 75 // lyumjev peak: 45
+            insulinPeak > 65 -> 55 // rapid peak: 75
+            insulinPeak > 50 -> 65 // ultra rapid peak: 55
+            else             -> 75 // lyumjev peak: 45
         }
-
 
         if (dynIsfResult.tddPartsCalculated() && glucoseStatus != null) {
             val tddStatus = TddStatus(dynIsfResult.tdd1D!!, dynIsfResult.tdd7D!!, dynIsfResult.tddLast24H!!, dynIsfResult.tddLast4H!!, dynIsfResult.tddLast8to4H!!)
             val tddWeightedFromLast8H = ((1.4 * tddStatus.tddLast4H) + (0.6 * tddStatus.tddLast8to4H)) * 3
             dynIsfResult.tdd = ((tddWeightedFromLast8H * 0.33) + (tddStatus.tdd7D * 0.34) + (tddStatus.tdd1D * 0.33)) * preferences.get(IntKey.ApsDynIsfAdjustmentFactor) / 100.0 * multiplier
             dynIsfResult.variableSensitivity = Round.roundTo(1800 / (dynIsfResult.tdd!! * (ln((glucoseStatus.glucose / dynIsfResult.insulinDivisor) + 1))), 0.1)
-            aapsLogger.debug(LTag.APS, "multiplier=$multiplier dynIsfResult=${dynIsfResult.log()} glucoseStatus=${glucoseStatus.glucose} insulinDivisor=${dynIsfResult.insulinDivisor}")
+            aapsLogger.debug(
+                LTag.APS,
+                "multiplier=$multiplier dynIsfResult=${dynIsfResult.log()} glucoseStatus=${glucoseStatus.glucose} insulinPeak=$insulinPeak insulinDivisor=${dynIsfResult.insulinDivisor}"
+            )
         }
         return dynIsfResult
     }
@@ -488,7 +492,10 @@ open class OpenAPSSMBPlugin @Inject constructor(
             out_units = if (profileFunction.getUnits() == GlucoseUnit.MMOL) "mmol/L" else "mg/dl",
             variable_sens = if (dynIsfMode) dynIsfResult.variableSensitivity ?: 0.0 else 0.0,
             insulinDivisor = dynIsfResult.insulinDivisor,
-            TDD = dynIsfResult.tdd ?: 0.0
+            TDD = dynIsfResult.tdd ?: 0.0,
+            // minPredBGs start once the insulin on board has peaked; only the glucodynamic models
+            // deviate from the oref default of 90, their peak time grows with the bolus size
+            insulin_peak_time = if (activePlugin.activeInsulin.glucodynamic) effectiveInsulinPeak() + 30.0 else 90.0
         )
         val microBolusAllowed = constraintsChecker.isSMBModeEnabled(ConstraintObject(tempBasalFallback.not(), aapsLogger)).also { inputConstraints.copyReasons(it) }.value()
         val flatBGsDetected = bgQualityCheck.state == BgQualityCheck.State.FLAT

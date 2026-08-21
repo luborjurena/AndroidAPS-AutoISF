@@ -7,6 +7,7 @@ import app.aaps.core.interfaces.iob.GlucoseStatusProvider
 import app.aaps.core.interfaces.profiling.Profiler
 import app.aaps.core.interfaces.stats.TddCalculator
 import app.aaps.core.interfaces.ui.UiInteraction
+import app.aaps.plugins.aps.openAPS.EffectiveInsulinPeak
 import app.aaps.shared.tests.TestBaseWithProfile
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -29,7 +30,8 @@ class OpenAPSSMBPluginTest : TestBaseWithProfile() {
         openAPSSMBPlugin = OpenAPSSMBPlugin(
             aapsLogger, rxBus, constraintChecker, rh, profileFunction, profileUtil, config, activePlugin,
             iobCobCalculator, hardLimits, preferences, dateUtil, processedTbrEbData, persistenceLayer, glucoseStatusProvider,
-            tddCalculator, bgQualityCheck, uiInteraction, determineBasalSMB, profiler, GlucoseStatusCalculatorSMB(aapsLogger, iobCobCalculator, dateUtil, decimalFormatter, deltaCalculator), apsResultProvider
+            tddCalculator, bgQualityCheck, uiInteraction, determineBasalSMB, profiler, GlucoseStatusCalculatorSMB(aapsLogger, iobCobCalculator, dateUtil, decimalFormatter, deltaCalculator), apsResultProvider,
+            EffectiveInsulinPeak(activePlugin, profileFunction, persistenceLayer, dateUtil)
         )
     }
 
@@ -49,4 +51,5 @@ class OpenAPSSMBPluginTest : TestBaseWithProfile() {
         openAPSSMBPlugin.addPreferenceScreen(preferenceManager, screen, context, null)
         assertThat(screen.preferenceCount).isGreaterThan(0)
     }
+
 }

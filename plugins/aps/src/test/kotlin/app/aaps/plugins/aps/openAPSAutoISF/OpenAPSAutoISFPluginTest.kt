@@ -15,6 +15,7 @@ import app.aaps.core.keys.BooleanKey
 import app.aaps.core.keys.DoubleKey
 import app.aaps.core.keys.IntKey
 import app.aaps.core.keys.UnitDoubleKey
+import app.aaps.plugins.aps.openAPS.EffectiveInsulinPeak
 import app.aaps.shared.tests.TestBaseWithProfile
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -39,7 +40,8 @@ class OpenAPSAutoISFPluginTest : TestBaseWithProfile() {
             aapsLogger, rxBus, constraintChecker, rh, profileFunction, profileUtil, config, activePlugin,
             iobCobCalculator, hardLimits, preferences, dateUtil, processedTbrEbData, persistenceLayer, glucoseStatusProvider,
             bgQualityCheck, uiInteraction, determineBasalSMB, profiler,
-            GlucoseStatusCalculatorAutoIsf(aapsLogger, iobCobCalculator, dateUtil, deltaCalculator), apsResultProvider
+            GlucoseStatusCalculatorAutoIsf(aapsLogger, iobCobCalculator, dateUtil, deltaCalculator), apsResultProvider,
+            EffectiveInsulinPeak(activePlugin, profileFunction, persistenceLayer, dateUtil)
         )
         openAPSAutoISFPlugin.automationStateService = automationStateService
     }

@@ -74,5 +74,8 @@ data class OapsProfileAutoIsf(
     var smb_max_range_extension: Double,
     var enableSMB_EvenOn_OddOff_always: Boolean,
     var iob_threshold_percent: Int,
-    var profile_percentage: Int
+    var profile_percentage: Int,
+    // Peak [min] of the insulin on board plus 30 min for delivery, drives when minPredBGs start.
+    // 90 (the oref default) unless a glucodynamic insulin model with a dose dependent peak is active.
+    var insulin_peak_time: Double = 90.0
 )

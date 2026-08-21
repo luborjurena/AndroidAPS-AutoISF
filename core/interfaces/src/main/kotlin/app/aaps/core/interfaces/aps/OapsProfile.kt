@@ -58,5 +58,8 @@ data class OapsProfile(
     var lgsThreshold: Int?,
     var variable_sens: Double,
     var insulinDivisor: Int,
-    var TDD: Double
+    var TDD: Double,
+    // Peak [min] of the insulin on board plus 30 min for delivery, drives when minPredBGs start.
+    // 90 (the oref default) unless a glucodynamic insulin model with a dose dependent peak is active.
+    var insulin_peak_time: Double = 90.0
 )
